@@ -1,35 +1,82 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Routes, Route, Link } from "react-router-dom";
+import Register from "./components/Register";
+import Login from "./components/Login";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Home from "./pages/Home";
+import Dashboard from "./pages/Dashboard";
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const navStyle = {
+    display: "flex",
+    gap: "15px",
+    padding: "15px",
+    backgroundColor: "#0d1117",
+    color: "#f5f5f5",
+    fontFamily: "Poppins, sans-serif",
+  };
+
+  const linkStyle = {
+    color: "#00bcd4",
+    textDecoration: "none",
+    fontWeight: "bold",
+    transition: "all 0.3s ease",
+  };
+
+  const handleHover = (e, hover) => {
+    e.target.style.color = hover ? "#4caf50" : "#00bcd4";
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <div style={{ backgroundColor: "#0d1117", minHeight: "100vh" }}>
+      <nav style={navStyle}>
+        <Link
+          to="/"
+          style={linkStyle}
+          onMouseEnter={(e) => handleHover(e, true)}
+          onMouseLeave={(e) => handleHover(e, false)}
+        >
+          Home
+        </Link>
+        <Link
+          to="/register"
+          style={linkStyle}
+          onMouseEnter={(e) => handleHover(e, true)}
+          onMouseLeave={(e) => handleHover(e, false)}
+        >
+          Register
+        </Link>
+        <Link
+          to="/login"
+          style={linkStyle}
+          onMouseEnter={(e) => handleHover(e, true)}
+          onMouseLeave={(e) => handleHover(e, false)}
+        >
+          Login
+        </Link>
+        <Link
+          to="/dashboard"
+          style={linkStyle}
+          onMouseEnter={(e) => handleHover(e, true)}
+          onMouseLeave={(e) => handleHover(e, false)}
+        >
+          Dashboard
+        </Link>
+      </nav>
 
-export default App
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </div>
+  );
+}
